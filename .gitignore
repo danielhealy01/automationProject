@@ -9,6 +9,9 @@ yarn-error.log
 # Secrets
 puppeteer_profile/
 
+# Data
+*.csv
+
 # Editor files
 .vscode/
 .idea/
