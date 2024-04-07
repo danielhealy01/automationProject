@@ -6,6 +6,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Secrets
+puppeteer_profile/
+
 # Editor files
 .vscode/
 .idea/
