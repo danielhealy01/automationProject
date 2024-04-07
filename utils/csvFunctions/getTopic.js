@@ -5,25 +5,36 @@ import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 
 // Create IF for csv not existing
+//Write test getTopic is working
 
 function absolutePathBuilder() {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = dirname(__filename)
     const relativeFilePath = '../../data.csv' // Your relative file path
     const absoluteFilePath = join(__dirname, relativeFilePath)
-    console.log('Resolved absolute file path:', absoluteFilePath)
+    // console.log('Resolved absolute file path:', absoluteFilePath)
     return absoluteFilePath
 }
 
 async function readCsvFile(filename) {
     try {
         const data = await fs.readFile(filename, 'utf8')
-
-        // Process data here
-        console.log(`CSV read:
-        ${data}`)
+        // console.log(`CSV read:
+        // ${data}`)
+        return data
     } catch (error) {
-        console.error('Error reading file:', error)
+        // console.error('Error reading file:', error)
     }
 }
-readCsvFile(absolutePathBuilder())
+
+export default async function getTopic() {
+    const parsedData = await readCsvFile(absolutePathBuilder())
+    // CSV rows are delimited by '\n'
+    const rows = parsedData.trim().split('\n')
+    const firstRow = rows[1]
+    // console.log(`first row: ${firstRow}`)
+    return firstRow
+}
+
+
+
