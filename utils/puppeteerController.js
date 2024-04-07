@@ -2,11 +2,11 @@
 // import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import Puppeteer from "puppeteer"
 import pupLaunch from "./pupFunctions/pupLaunch.js"
-import pupFirstSearch from './pupFunctions/pupFirstSearch.js'
+// import pupSendPrompt from './pupFunctions/pupSendPrompt.js'
 
 export async function run() {
     await pupLaunch()
-    await pupFirstSearch()
+    // await pupSendPrompt()
 }
 
 // If Dom bug, opening dev tools to mobile view and close resets

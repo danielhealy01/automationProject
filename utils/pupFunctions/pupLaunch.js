@@ -8,6 +8,18 @@ export default async function pupLanuch() {
         args: ['--user-data-dir=./puppeteer_profile'],
         // caches guest previous login cookies
     })
+    
     const page = await browser.newPage()
-    await page.goto('https://chat.openai.com')
+    
+    try {
+        await page.goto('https://chat.openai.com')
+        await page.waitForSelector('textarea#prompt-textarea', {
+            timeout: 10000,
+        })
+        console.log('Textarea loaded and interactive.')
+    } catch (error) {
+        console.log(`Prompt input field did not load:
+        ${error}
+        `)
+    }
 }
