@@ -1,11 +1,13 @@
-import puppeteer from 'puppeteer'
-export async function run() {
+import Puppeteer from 'puppeteer'
+
+export default async function pupLanuch() {
     //launch blank page and open new page
-    const browser = await puppeteer.launch({
+    // puppeteer.use(StealthPlugin())
+    const browser = await Puppeteer.launch({
         headless: false,
         args: ['--user-data-dir=./puppeteer_profile'],
+        // caches guest previous login cookies
     })
     const page = await browser.newPage()
     await page.goto('https://chat.openai.com')
-    await page.setViewport({ width: 1080, height: 1024 })
 }
