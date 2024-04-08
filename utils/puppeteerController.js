@@ -8,7 +8,7 @@ export async function run() {
     const browser = await Puppeteer.launch({
         headless: false,
         args: ['--user-data-dir=./puppeteer_profile'],
-        // caches guest previous login cookies
+        // get cached previous guest login cookies
     })
     let promptNumber = 1
     const page = await browser.newPage()
@@ -19,6 +19,7 @@ export async function run() {
         await sendNPrompt(page, promptNumber)
         promptNumber++
     }
+    console.log('finished to here')
 }
 
 // If Dom bug, opening dev tools to mobile view and close resets

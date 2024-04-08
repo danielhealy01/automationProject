@@ -40,11 +40,19 @@ pupSendPrompt - Puppeteer Send Prompt.
 * Inserts the topic to search GPT into the textarea.
 * Searches.
 
+promptBuilder - Prompt Builder
+* Dynamically generates the prompts to be sent to the llm.
+* First prompt & n sequential prompts.
+
 __CSV Read / Write__
 
 getTopic
 * Generates an absolute path to csv db
 * Get's topic from first row of CSV db
+
+getInstructions
+* Generates an absolute path to instructions csv db
+* uses prompt number to calculate which article section to ask for
   
 __Other__
 

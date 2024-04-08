@@ -27,7 +27,7 @@ async function readCsvFile(filename) {
     }
 }
 
-export default async function getInstruction(promptNumber) {
+export default async function getInstruction() {
     const parsedData = await readCsvFile(absolutePathBuilder())
     // CSV rows are delimited by '\n'
     const rows = parsedData.trim().split('\n')
