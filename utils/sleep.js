@@ -15,7 +15,7 @@ export async function longSleep() {
 }
 
 export async function typeSleep() {
-    const sleepTime = randomSleep(100, 350) // Generate random time between 1 second and 2.5 seconds
+    const sleepTime = randomSleep(50, 150) // Generate random time between 1 second and 2.5 seconds
     await new Promise((resolve) => setTimeout(resolve, sleepTime))
     return sleepTime
 }

@@ -2,7 +2,7 @@
 // import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import Puppeteer from 'puppeteer'
 import pupLaunch from './pupFunctions/pupLaunch.js'
-import { sendFirstPrompt } from './pupFunctions/pupSendPrompt.js'
+import { sendFirstPrompt, sendNPrompt } from './pupFunctions/pupSendPrompt.js'
 
 export async function run() {
     const browser = await Puppeteer.launch({
@@ -10,14 +10,15 @@ export async function run() {
         args: ['--user-data-dir=./puppeteer_profile'],
         // caches guest previous login cookies
     })
-    let promptNumber = 0
+    let promptNumber = 1
     const page = await browser.newPage()
     await pupLaunch(page)
     await sendFirstPrompt(page)
     promptNumber++
-    // while promptNumber < End {continue}
-    // await sendNPrompt(page, promptNumber)
-    // promptNumber++
+    while (promptNumber < 8) {
+        await sendNPrompt(page, promptNumber)
+        promptNumber++
+    }
 }
 
 // If Dom bug, opening dev tools to mobile view and close resets

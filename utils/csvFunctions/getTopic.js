@@ -32,7 +32,6 @@ export default async function getTopic() {
     // CSV rows are delimited by '\n'
     const rows = parsedData.trim().split('\n')
     const firstRow = rows[1]
-    // console.log(`first row: ${firstRow}`)
     return firstRow
 }
 
