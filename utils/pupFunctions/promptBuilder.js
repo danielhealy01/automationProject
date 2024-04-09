@@ -20,9 +20,7 @@ export async function getThreadFirstPrompt() {
     
 }
 
-
-
-
-// export async function getThreadNPrompt() {
-
-// }
+export async function getCarouselPrompt() {
+    // console.log(`prompt number: ${promptNumber} and sessionID: ${sessionID})`)
+    return `${await getInstruction(3)}`
+}

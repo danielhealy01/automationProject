@@ -2,6 +2,7 @@ import {
     firstPrompt,
     getNPrompt,
     getThreadFirstPrompt,
+    getCarouselPrompt,
 } from './promptBuilder.js'
 import isTextRenderedFully from '../isTextRenderedFully.js'
 import sleep, { longSleep, typeSleep } from '../sleep.js'
@@ -71,6 +72,33 @@ export async function sendFirstThreadPrompt(page, promptNumber) {
         await page.type(
             'textarea#prompt-textarea',
             await getThreadFirstPrompt(),
+        )
+        await sleep()
+        console.log('sleep end')
+        await page.click('textarea#prompt-textarea')
+        await sleep()
+        await page.click('button[data-testid="send-button"]')
+        await longSleep()
+        console.log(`I think this is conversation turn ${promptNumber * 2 - 1}`)
+        await isTextRenderedFully(
+            page,
+            `div[data-testid="conversation-turn-${promptNumber * 2 + 1}"]`
+        )
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function sendCarouselPrompt(page, promptNumber) {
+    try {
+        await sleep()
+        await page.click('textarea#prompt-textarea')
+        await sleep()
+        // add delay option to mimic more realistic typing
+        // random time between 0.2 and 0.8 for each keystroke sleep()
+        await page.type(
+            'textarea#prompt-textarea',
+            await getCarouselPrompt()
         )
         await sleep()
         console.log('sleep end')

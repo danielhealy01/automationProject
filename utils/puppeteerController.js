@@ -6,6 +6,7 @@ import {
     sendFirstPrompt,
     sendFirstThreadPrompt,
     sendNPrompt,
+    sendCarouselPrompt,
 } from './pupFunctions/pupSendPrompt.js'
 import writeReplysToJSON from './pupFunctions/writeReplysToJSON.js'
 import writeThreadToJSON from './pupFunctions/writeThreadToJSON.js'
@@ -33,6 +34,7 @@ export async function run() {
     await writeReplysToJSON(page, sessionID)
     await sendFirstThreadPrompt(page, promptNumber)
     await writeThreadToJSON(page, sessionID)
+    await sendCarouselPrompt(page, promptNumber)
     console.log('finished to here')
 }
 
