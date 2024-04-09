@@ -11,6 +11,7 @@ export async function sendFirstPrompt(page) {
         await sleep()
         await page.click('textarea#prompt-textarea')
         await sleep()
+        await sleep()
         // Change name of firstPrompt() to getFirstPrompt()
         await page.type('textarea#prompt-textarea', await firstPrompt(), {
             delay: await typeSleep(),

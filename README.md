@@ -60,6 +60,9 @@ __Other__
 writeReplyToJson
 * Saves chatGPTs responses to a json file
 
+writeThreadToJson
+* Saves chatGPTs gen threads to a json file
+
 getArticleFromID
 * Not currently used
 * Was going to be used to feed back into GPT to strengthen the context.
@@ -86,5 +89,13 @@ If you have never signed into chat gpt, it will break looking for prompt text ar
 Pup controller browser instantiation should be in a try catch
 At least once, the server has crashed. Error: Requesting main frame too early! Selector didn't appear
 To counter this, the current run() should be aborted and retried.
+Currently the thread is only generating from the last part of the article
+But context window too small to give whole article...
 
+Putting puppeteer in background hardships
+by mouse click isnt working
+by keyboard shortcuts not working
+by applescript not working
+by args --background --start-minimized not working
+by chromium info.plist missing
 

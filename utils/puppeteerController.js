@@ -8,6 +8,7 @@ import {
     sendNPrompt,
 } from './pupFunctions/pupSendPrompt.js'
 import writeReplysToJSON from './pupFunctions/writeReplysToJSON.js'
+import writeThreadToJSON from './pupFunctions/writeThreadToJSON.js'
 
 export async function run() {
     const sessionID = Date.now()
@@ -31,6 +32,7 @@ export async function run() {
     }
     await writeReplysToJSON(page, sessionID)
     await sendFirstThreadPrompt(page, promptNumber)
+    await writeThreadToJSON(page, sessionID)
     console.log('finished to here')
 }
 
