@@ -27,10 +27,10 @@ async function readCsvFile(filename) {
     }
 }
 
-export default async function getInstruction() {
+export default async function getInstruction(n) {
     const parsedData = await readCsvFile(absolutePathBuilder())
     // CSV rows are delimited by '\n'
     const rows = parsedData.trim().split('\n')
-    const firstRow = `${rows[1]}`
+    const firstRow = `${rows[n]}`
     return firstRow
 }

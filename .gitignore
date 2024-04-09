@@ -11,6 +11,7 @@ puppeteer_profile/
 
 # Data
 *.csv
+*.json
 
 # Editor files
 .vscode/

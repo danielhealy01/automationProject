@@ -30,7 +30,7 @@ Holds all of the components and util functions.
 __Puppeteer__
 
 pupController - Puppeteer Controller.
-* Top level puppeteer object instantiation. Gens the browser and page. Passes page to other util functions.
+* Top level puppeteer object instantiation. Gens the browser and page. Passes page to other util func
 * Sequentially runs the puppeteer action functions.
 
 pupLaunch - Puppeteer Launcher.
@@ -43,6 +43,7 @@ pupSendPrompt - Puppeteer Send Prompt.
 promptBuilder - Prompt Builder
 * Dynamically generates the prompts to be sent to the llm.
 * First prompt & n sequential prompts.
+* thread builder prompt
 
 __CSV Read / Write__
 
@@ -56,8 +57,18 @@ getInstructions
   
 __Other__
 
+writeReplyToJson
+* Saves chatGPTs responses to a json file
+
+getArticleFromID
+* Not currently used
+* Was going to be used to feed back into GPT to strengthen the context.
+* Article generated is to big an input
+* may be useful for the other LLMs
+
 sleep
 * Random sleep time approx 1.5 sec to spoof rate limit checkers
+* also long sleep to guarentee things are finished if can't use page.waitfor()
 
 isTextRenderedFully
 * The chatGPT reply textarea dynamically populates over time. Checks when resp. finished.
@@ -68,10 +79,12 @@ On open GPT site, are you logged in and at home screen?
 Feature:
 If error on reaching chatgpt home[logged in], ping me a message saying server dead. Handle error
 Abstract out absolute path builder for all CSV gets.
-Add delay prop in opt object for page.type to be more realistic
+
 
 Thoughts:
 If you have never signed into chat gpt, it will break looking for prompt text area
 Pup controller browser instantiation should be in a try catch
+At least once, the server has crashed. Error: Requesting main frame too early! Selector didn't appear
+To counter this, the current run() should be aborted and retried.
 
 
