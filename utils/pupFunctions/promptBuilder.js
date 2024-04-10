@@ -24,3 +24,8 @@ export async function getCarouselPrompt() {
     // console.log(`prompt number: ${promptNumber} and sessionID: ${sessionID})`)
     return `${await getInstruction(3)}`
 }
+
+export async function getVideoScriptPrompt() {
+    // console.log(`prompt number: ${promptNumber} and sessionID: ${sessionID})`)
+    return `${await getInstruction(4)}`
+}

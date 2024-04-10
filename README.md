@@ -44,6 +44,8 @@ promptBuilder - Prompt Builder
 * Dynamically generates the prompts to be sent to the llm.
 * First prompt & n sequential prompts.
 * thread builder prompt
+* Carousel builder prompt
+* Video script builder prompt
 
 __CSV Read / Write__
 
@@ -62,6 +64,11 @@ writeReplyToJson
 
 writeThreadToJson
 * Saves chatGPTs gen threads to a json file
+
+writeCarouselToJson
+
+writeVideoScriptToJson
+
 
 getArticleFromID
 * Not currently used
