@@ -36,26 +36,30 @@ export default async function exportArticle() {
                 textarea.textContent = ''
             })
             await sleep()
-            await page.type(
-                'div[contenteditable="true"]',
-                await getClaudePrompt(),
-                // {
-                //     delay: await typeSleep(),
-                // }
-            )
+            // disable below to prevent text input
+            // await page.type(
+            //     'div[contenteditable="true"]',
+            //     await getClaudePrompt()
+            //     // {
+            //     //     delay: await typeSleep(),
+            //     // }
+            // )
             await sleep()
             // check for button
+            //disable below to prevent executing prompt
             // await page.click('div[data-value="new chat"]')
             // await sleep()
             // await isClaudeTextRenderedFully(page)
-            await writeArticleToDrive(page)
+            // await writeArticleToDrive(page)
+            
+            await sleep()
+            
             console.log('check finished typing finished to here')
         } catch (error) {
             console.log(`Prompt input field did not load:
         ${error}
         `)
         }
-
     } catch (error) {
         console.log(error)
     }
@@ -92,7 +96,5 @@ async function isClaudeTextRenderedFully(page) {
     console.log('***Claude3 has finished***')
     return await check(page)
 }
-
-
 
 await exportArticle()
