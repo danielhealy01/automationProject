@@ -1,6 +1,6 @@
 import getTopic from '../csvFunctions/getTopic.js'
 import getInstruction from '../csvFunctions/getInstruction.js'
-import getArticleFromID from '../getArticleFromID.js'
+import getArticle from '../getArticle.js'
 
 export async function firstPrompt() {
     const topic = await getTopic()
@@ -28,4 +28,10 @@ export async function getCarouselPrompt() {
 export async function getVideoScriptPrompt() {
     // console.log(`prompt number: ${promptNumber} and sessionID: ${sessionID})`)
     return `${await getInstruction(4)}`
+}
+
+export async function getClaudePrompt() {
+    //need to pass in article number
+    // Atm defaults to last article gen'd
+    return `${await getInstruction(5)} ${await getArticle()}`
 }

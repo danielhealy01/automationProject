@@ -140,3 +140,4 @@ export async function sendVideoScriptPrompt(page, promptNumber) {
         console.log(error)
     }
 }
+

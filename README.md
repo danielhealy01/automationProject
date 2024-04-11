@@ -46,6 +46,14 @@ promptBuilder - Prompt Builder
 * thread builder prompt
 * Carousel builder prompt
 * Video script builder prompt
+* Claude3 prompt to stitch together blog with formatting
+
+exportArticle
+* Opens claude3 and sends prompt
+* Checks claude3 has finished typing
+
+getArticle
+* concats previous bog article output so that it an be reformatted by claude3
 
 __CSV Read / Write__
 

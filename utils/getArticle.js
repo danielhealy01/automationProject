@@ -10,15 +10,18 @@ function absolutePathBuilder() {
     return absoluteFilePath
 }
 
-export default async function getArticleFromID() {
+export default async function getArticle() {
     try {
         // Read the JSON file
         const jsonData = await readFile(absolutePathBuilder(), 'utf-8')
 
         // Parse the JSON data
         const articleList = JSON.parse(jsonData)
-
-        const article = articleList[articleList.length - 1].conversations.join(' ')
+        //for now just referencing last article gen'd
+        const article = articleList[articleList.length - 1].conversations
+            .join(' ')
+            .replaceAll('\n', ' ')
+            .replaceAll('ChatGPTChatGPT', '')
 
         return article
     } catch (error) {
