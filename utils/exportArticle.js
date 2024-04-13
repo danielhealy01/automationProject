@@ -1,4 +1,8 @@
-import Puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+import AnonymizeUAPlugin from 'puppeteer-extra-plugin-anonymize-ua'
+import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
+
 import sleep from './sleep.js'
 import { getClaudePrompt } from './pupFunctions/promptBuilder.js'
 import writeArticleToDrive from './pupFunctions/writeArticleToDrive.js'
@@ -7,14 +11,25 @@ export default async function exportArticle() {
     try {
         //open new puppeteer tab
 
-        const browser = await Puppeteer.launch({
+        puppeteer.use(StealthPlugin())
+        puppeteer.use(AnonymizeUAPlugin())
+        puppeteer.use(
+            AdblockerPlugin({
+                blockTrackers: true,
+            })
+        )
+
+        const browser = await puppeteer.launch({
             headless: false,
+            defaultViewport: null,
+            ignoreDefaultArgs: ['--disable-extensions'],
+            dumpio: true,
             args: [
+                '--start-maximized',
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
                 '--user-data-dir=./puppeteer_profile',
-                // '--background',
-                // '--start-minimized',
             ],
-            // get cached previous guest login cookies
         })
 
         const page = await browser.newPage()
@@ -37,23 +52,23 @@ export default async function exportArticle() {
             })
             await sleep()
             // disable below to prevent text input
-            // await page.type(
-            //     'div[contenteditable="true"]',
-            //     await getClaudePrompt()
-            //     // {
-            //     //     delay: await typeSleep(),
-            //     // }
-            // )
+            await page.type(
+                'div[contenteditable="true"]',
+                await getClaudePrompt()
+                // {
+                //     delay: await typeSleep(),
+                // }
+            )
             await sleep()
             // check for button
             //disable below to prevent executing prompt
-            // await page.click('div[data-value="new chat"]')
-            // await sleep()
-            // await isClaudeTextRenderedFully(page)
-            // await writeArticleToDrive(page)
-            
+            await page.click('div[data-value="new chat"]')
             await sleep()
-            
+            await isClaudeTextRenderedFully(page)
+            await writeArticleToDrive(page)
+
+            await sleep()
+
             console.log('check finished typing finished to here')
         } catch (error) {
             console.log(`Prompt input field did not load:
@@ -97,4 +112,3 @@ async function isClaudeTextRenderedFully(page) {
     return await check(page)
 }
 
-await exportArticle()

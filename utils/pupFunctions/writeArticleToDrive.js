@@ -1,9 +1,10 @@
-import sleep from '../sleep.js'
+import sleep, { longSleep } from '../sleep.js'
+import clipboard from 'clipboardy'
 
 export default async function writeArticleToDrive(page) {
     // try highlight text while still in claude 3
 
-    await page.evaluate(() => {
+    await page.evaluate(async() => {
         const textarea = document.querySelector('div .font-claude-message')
 
         // Set the selection range to select all text
@@ -14,15 +15,35 @@ export default async function writeArticleToDrive(page) {
         selection.addRange(range)
         // deprecated, but only method that copies styling
         document.execCommand('copy')
+        try {
+            await clipboard.writeSync(selection)
+        } catch (error) {
+            console.log(error)
+        }
     })
 
     await sleep()
 
-    await page.goto('https://www.bbc.co.uk')
+    await page.goto(
+        'https://docs.google.com/document/create?usp=drive_web&ouid=111731898747045148694&folder=10JegdF1l32KDZqy76qQSo70xU7ujoYsj'
+    )
+    await sleep()
+    await page.click('.kix-canvas-tile-content')
+    await sleep()
 
-    // new tab to google drive
-    // wait for selector button>new, click
-    // wait for selector div>innertext Google Docs
+    // works no styles
+    await page.keyboard.type(
+        clipboard.readSync()
+        // {
+        //     delay: await typeSleep(),
+        // }
+    )
+    await sleep()
+
+    await page.click('.docs-title-input')
+    await sleep()
+    await page.click('.kix-canvas-tile-content')
+
     // wait for page
     // paste in correct way.
     // remove formating - (I think keeps the h1, h2 and spacing!)

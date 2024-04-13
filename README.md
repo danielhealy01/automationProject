@@ -91,6 +91,9 @@ sleep
 isTextRenderedFully
 * The chatGPT reply textarea dynamically populates over time. Checks when resp. finished.
 
+exportArticle & writeArticleToGoogleDrive
+* Opens Claude3 stitches together copies, pastes into google drive saves with title.
+
 Tests to write:
 On open GPT site, are you logged in and at home screen?
 
@@ -114,3 +117,10 @@ by applescript not working
 by args --background --start-minimized not working
 by chromium info.plist missing
 
+Google drive hardships
+Couldnt manipulate google drive menu very well
+Instead, took the forwarding url as you click new doc before halfway through the url change
+Hopefully it wont change and break!
+
+Claude 3 stitch is over engineered?
+Why not just join the article conversation array by \n, copy clipboard, paste in dive. Don't need claude 3.

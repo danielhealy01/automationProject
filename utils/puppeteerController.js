@@ -14,6 +14,7 @@ import writeReplysToJSON from './pupFunctions/writeReplysToJSON.js'
 import writeThreadToJSON from './pupFunctions/writeThreadToJSON.js'
 import writeCarouselToJSON from './pupFunctions/writeCarouselToJSON.js'
 import writeVideoScriptToJSON from './pupFunctions/writeVideoScriptToJSON.js'
+import exportArticle from './exportArticle.js'
 
 export async function run() {
     let startTime = Date.now()
@@ -46,6 +47,8 @@ export async function run() {
     await sendVideoScriptPrompt(page, promptNumber)
     promptNumber++
     await writeVideoScriptToJSON(page, sessionID)
+    await browser.close()
+    await exportArticle()
     console.log('finished to here')
     console.log(getElapsedTime(startTime))
 }
