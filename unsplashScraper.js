@@ -5,25 +5,26 @@
 // Have sleep() between requests and downloads
 
 // change to better reflect limits
+// need to do seperate downlaod and request max
+
+// Need to add ability to do other keywords other than japan
 
 // while loop
-    // while under hourly request limit, loop function through pages
-    // do pagination!
-
+// while under hourly request limit, loop function through pages
+// do pagination!
+import dotenv from 'dotenv'
 import fs from 'node:fs'
 import path from 'node:path'
 import sleep from './utils/sleep.js'
 
-// let requestCount = 0
-// let downloadCount = 0
-const MAX_COUNT_PER_DAY = 25
+dotenv.config({ path: `.env/.env.${process.env.NODE_ENV || 'dev'}` })
 
-const query = 'japan'
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY
+const MAX_COUNT_PER_DAY = 125
+
 const page = 3
 const perPage = 30
-const UNSPLASH_API_KEY = '31HwuKogPouWKWxbmWxzLtj2mr4Jqy2jTj3XylxfOb8'
 // const UNSPLASH_API_URL = 'https://api.unsplash.com/photos/random'
-const UNSPLASH_API_URL = `https://api.unsplash.com/search/photos?query=${query}&orientation=portrait&order_by=latest&per_page=${perPage}&page=${page}`
 const PHOTOS_DIR = 'downloaded_photos'
 
 const headers = {
@@ -53,52 +54,6 @@ async function downloadImage(imageUrl, imageName) {
         console.error('Error downloading image:', err)
     }
 }
-
-async function fetchAndDownloadImages() {
-    try {
-        // Create the photos directory if it doesn't exist
-        if (!fs.existsSync(PHOTOS_DIR)) {
-            fs.mkdirSync(PHOTOS_DIR)
-        }
-
-        // Fetch a random portrait-oriented, free-to-use image from Unsplash
-        const response = await fetch(
-            // `${UNSPLASH_API_URL}?orientation=portrait&count=1&client_id=${UNSPLASH_API_KEY}`,
-            `${UNSPLASH_API_URL}`,
-            {
-                headers: headers,
-            }
-        )
-        const data = await response.json()
-        // console.log(data)
-
-        const results = data.results
-
-        // increase request counter
-        incrementCounter('request')
-
-        for (const el of results) {
-            const imageUrl = el.urls.regular
-            const imageName = `${el.slug}.jpg`
-            const filePath = path.join(PHOTOS_DIR, imageName)
-
-            if (!fileExists(filePath)) {
-                await sleep()
-                await downloadImage(imageUrl, imageName)
-                // increase download counter for each download
-                incrementCounter('download')
-            } else {
-                console.log(
-                    `Image ${imageName} already exists, skipping download.`
-                )
-            }
-        }
-    } catch (err) {
-        console.error('Error fetching and downloading images:', err)
-    }
-}
-
-// await fetchAndDownloadImages()
 
 let counterData = {
     lastUpdated: null,
@@ -177,4 +132,68 @@ function incrementCounter(type) {
     updateCounterData()
 }
 
-await fetchAndDownloadImages()
+async function fetchAndDownloadImages(pageN, query) {
+    try {
+        // Create the photos directory if it doesn't exist
+        if (!fs.existsSync(PHOTOS_DIR)) {
+            fs.mkdirSync(PHOTOS_DIR)
+        }
+
+        // Fetch a random portrait-oriented, free-to-use image from Unsplash
+        const UNSPLASH_API_URL = `https://api.unsplash.com/search/photos?query=${query}&orientation=portrait&order_by=latest&per_page=${perPage}&page=${pageN}`
+        const response = await fetch(`${UNSPLASH_API_URL}`, {
+            headers: headers,
+        })
+        const data = await response.json()
+        const results = data.results
+
+        // Increase request counter
+        incrementCounter('request')
+        if (!Array.isArray(results)) {
+            console.log('not returning iterable image download list. Aborting to mitigate flooding requests. Check API key maybe.')
+            process.exit(1)
+        }
+        for (const el of results) {
+            const imageUrl = el.urls.regular
+            const imageName = `${el.slug}.jpg`
+            const filePath = path.join(PHOTOS_DIR, imageName)
+
+            if (!fileExists(filePath)) {
+                await sleep(1000) // Wait for 1 second
+                await downloadImage(imageUrl, imageName)
+                // Increase download counter for each download
+                incrementCounter('download')
+            } else {
+                console.log(
+                    `Image ${imageName} already exists, skipping download.`
+                )
+            }
+        }
+    } catch (err) {
+        console.error('Error fetching and downloading images:', err)
+    }
+}
+
+export default async function forEachPageFetchAndDownload(query) {
+    getCounterData()
+    for (let pageN = 1; pageN < 100000; pageN++) {
+        if (
+            counterData.downloadCount < MAX_COUNT_PER_DAY &&
+            counterData.requestCount < MAX_COUNT_PER_DAY
+        ) {
+            console.log(`
+            -----------------------------------------------------
+            ***** Searching for images of ${query}. *****
+            -----------------------------------------------------
+            `)
+            console.log(`***** Starting downloads from page ${pageN}... *****`)
+            await sleep()
+            await fetchAndDownloadImages(pageN, query)
+        } else {
+            console.log(`can't scrape page ${pageN}. At the limit for today.`)
+            return
+        }
+    }
+}
+
+await forEachPageFetchAndDownload('osaka')

@@ -65,6 +65,15 @@ getInstructions
 * Generates an absolute path to instructions csv db
 * uses prompt number to calculate which article section to ask for
   
+
+__Photo Scraper__
+
+unsplashScraper.js
+*rate limited photo scrpaper.
+*arg is the topic.
+* unsplash rate limit is 50 requests per hour.
+* configured
+
 __Other__
 
 writeReplyToJson
