@@ -1,11 +1,8 @@
-// for of array to save one by one with sleep
 // Must not do more than 25 JSON requests per hour. (accidentally did 24 hours ha)
-// Have sleep() between requests and downloads
 
 // change to better reflect limits
 // need to do seperate downlaod and request max
 
-// Need to add ability to landscape for blog
 
 import dotenv from 'dotenv'
 import fs from 'node:fs'
