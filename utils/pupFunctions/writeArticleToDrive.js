@@ -4,7 +4,7 @@ import clipboard from 'clipboardy'
 export default async function writeArticleToDrive(page) {
     // try highlight text while still in claude 3
 
-    await page.evaluate(async() => {
+    await page.evaluate(async () => {
         const textarea = document.querySelector('div .font-claude-message')
 
         // Set the selection range to select all text

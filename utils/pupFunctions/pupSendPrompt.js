@@ -72,7 +72,7 @@ export async function sendFirstThreadPrompt(page, promptNumber) {
         // random time between 0.2 and 0.8 for each keystroke sleep()
         await page.type(
             'textarea#prompt-textarea',
-            await getThreadFirstPrompt(),
+            await getThreadFirstPrompt()
         )
         await sleep()
         console.log('sleep end')
@@ -97,10 +97,7 @@ export async function sendCarouselPrompt(page, promptNumber) {
         await sleep()
         // add delay option to mimic more realistic typing
         // random time between 0.2 and 0.8 for each keystroke sleep()
-        await page.type(
-            'textarea#prompt-textarea',
-            await getCarouselPrompt()
-        )
+        await page.type('textarea#prompt-textarea', await getCarouselPrompt())
         await sleep()
         console.log('sleep end')
         await page.click('textarea#prompt-textarea')
@@ -124,7 +121,10 @@ export async function sendVideoScriptPrompt(page, promptNumber) {
         await sleep()
         // add delay option to mimic more realistic typing
         // random time between 0.2 and 0.8 for each keystroke sleep()
-        await page.type('textarea#prompt-textarea', await getVideoScriptPrompt())
+        await page.type(
+            'textarea#prompt-textarea',
+            await getVideoScriptPrompt()
+        )
         await sleep()
         console.log('sleep end')
         await page.click('textarea#prompt-textarea')
@@ -140,4 +140,3 @@ export async function sendVideoScriptPrompt(page, promptNumber) {
         console.log(error)
     }
 }
-

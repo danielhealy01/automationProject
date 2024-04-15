@@ -111,4 +111,3 @@ async function isClaudeTextRenderedFully(page) {
     console.log('***Claude3 has finished***')
     return await check(page)
 }
-

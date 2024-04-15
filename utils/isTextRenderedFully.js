@@ -1,7 +1,6 @@
-import sleep from "./sleep.js"
+import sleep from './sleep.js'
 
 export default async function isTextRenderedFully(page, replyTurnSelector) {
-  
     await page.waitForSelector(replyTurnSelector, { visible: true })
     // Visibility true means on page, not just in code
     async function check(page, replyTurnSelector) {
