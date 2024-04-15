@@ -1,5 +1,3 @@
-// queries first page of portrait latest japan images and downloads the first image.
-// save by slug isntead of id
 // for of array to save one by one with sleep
 // Must not do more than 25 JSON requests per hour. (accidentally did 24 hours ha)
 // Have sleep() between requests and downloads
@@ -7,11 +5,8 @@
 // change to better reflect limits
 // need to do seperate downlaod and request max
 
-// Need to add ability to do other keywords other than japan
+// Need to add ability to landscape for blog
 
-// while loop
-// while under hourly request limit, loop function through pages
-// do pagination!
 import dotenv from 'dotenv'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -22,7 +17,6 @@ dotenv.config({ path: `.env/.env.${process.env.NODE_ENV || 'dev'}` })
 const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY
 const MAX_COUNT_PER_DAY = 125
 
-const page = 3
 const perPage = 30
 // const UNSPLASH_API_URL = 'https://api.unsplash.com/photos/random'
 const PHOTOS_DIR = 'downloaded_photos'
@@ -42,11 +36,11 @@ function fileExists(filePath) {
     }
 }
 
-async function downloadImage(imageUrl, imageName) {
+async function downloadImage(imageUrl, imageName, photosDir) {
     const response = await fetch(imageUrl)
     const buffer = await response.arrayBuffer()
     const imageBuffer = Buffer.from(buffer)
-    const filePath = path.join(PHOTOS_DIR, imageName)
+    const filePath = path.join(photosDir, imageName)
     try {
         fs.writeFileSync(filePath, imageBuffer)
         console.log(`Downloaded image: ${imageName}`)
@@ -132,15 +126,9 @@ function incrementCounter(type) {
     updateCounterData()
 }
 
-async function fetchAndDownloadImages(pageN, query) {
+async function fetchAndDownloadImages(pageN, query, orientation, photosDir) {
     try {
-        // Create the photos directory if it doesn't exist
-        if (!fs.existsSync(PHOTOS_DIR)) {
-            fs.mkdirSync(PHOTOS_DIR)
-        }
-
-        // Fetch a random portrait-oriented, free-to-use image from Unsplash
-        const UNSPLASH_API_URL = `https://api.unsplash.com/search/photos?query=${query}&orientation=portrait&order_by=latest&per_page=${perPage}&page=${pageN}`
+        const UNSPLASH_API_URL = `https://api.unsplash.com/search/photos?query=${query}&orientation=${orientation}&order_by=latest&per_page=${perPage}&page=${pageN}`
         const response = await fetch(`${UNSPLASH_API_URL}`, {
             headers: headers,
         })
@@ -150,17 +138,19 @@ async function fetchAndDownloadImages(pageN, query) {
         // Increase request counter
         incrementCounter('request')
         if (!Array.isArray(results)) {
-            console.log('not returning iterable image download list. Aborting to mitigate flooding requests. Check API key maybe.')
+            console.log(
+                'not returning iterable image download list. Aborting to mitigate flooding requests. Check API key maybe.'
+            )
             process.exit(1)
         }
         for (const el of results) {
             const imageUrl = el.urls.regular
             const imageName = `${el.slug}.jpg`
-            const filePath = path.join(PHOTOS_DIR, imageName)
+            const filePath = path.join(photosDir, imageName)
 
             if (!fileExists(filePath)) {
                 await sleep(1000) // Wait for 1 second
-                await downloadImage(imageUrl, imageName)
+                await downloadImage(imageUrl, imageName, photosDir)
                 // Increase download counter for each download
                 incrementCounter('download')
             } else {
@@ -174,8 +164,21 @@ async function fetchAndDownloadImages(pageN, query) {
     }
 }
 
-export default async function forEachPageFetchAndDownload(query) {
+export default async function forEachPageFetchAndDownload(
+    query,
+    orientation = 'portrait'
+) {
     getCounterData()
+    const PHOTOS_DIR =
+        orientation === 'portrait'
+            ? 'downloaded_photos'
+            : 'downloaded_landscape_photos'
+
+    // Create the photos directory if it doesn't exist
+    if (!fs.existsSync(PHOTOS_DIR)) {
+        fs.mkdirSync(PHOTOS_DIR)
+    }
+
     for (let pageN = 1; pageN < 100000; pageN++) {
         if (
             counterData.downloadCount < MAX_COUNT_PER_DAY &&
@@ -183,12 +186,12 @@ export default async function forEachPageFetchAndDownload(query) {
         ) {
             console.log(`
             -----------------------------------------------------
-            ***** Searching for images of ${query}. *****
+            ***** Searching for ${orientation} images of ${query}. *****
             -----------------------------------------------------
             `)
             console.log(`***** Starting downloads from page ${pageN}... *****`)
             await sleep()
-            await fetchAndDownloadImages(pageN, query)
+            await fetchAndDownloadImages(pageN, query, orientation, PHOTOS_DIR)
         } else {
             console.log(`can't scrape page ${pageN}. At the limit for today.`)
             return
@@ -196,4 +199,4 @@ export default async function forEachPageFetchAndDownload(query) {
     }
 }
 
-await forEachPageFetchAndDownload('osaka')
+await forEachPageFetchAndDownload('osaka', 'landscape')

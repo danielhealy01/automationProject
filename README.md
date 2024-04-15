@@ -133,3 +133,7 @@ Hopefully it wont change and break!
 
 Claude 3 stitch is over engineered?
 Why not just join the article conversation array by \n, copy clipboard, paste in dive. Don't need claude 3.
+
+Image compression:
+Avif betetr than webp.
+Insta takes avif, tiktok only png jpg.
