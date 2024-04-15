@@ -1,9 +1,3 @@
-// Must not do more than 25 JSON requests per hour. (accidentally did 24 hours ha)
-
-// change to better reflect limits
-// need to do seperate downlaod and request max
-
-
 import dotenv from 'dotenv'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -12,11 +6,10 @@ import sleep from './utils/sleep.js'
 dotenv.config({ path: `.env/.env.${process.env.NODE_ENV || 'dev'}` })
 
 const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY
-const MAX_COUNT_PER_DAY = 125
+const MAX_DOWNLOAD_PER_HOUR = 1000
+const MAX_REQUEST_PER_HOUR = 25
 
 const perPage = 30
-// const UNSPLASH_API_URL = 'https://api.unsplash.com/photos/random'
-const PHOTOS_DIR = 'downloaded_photos'
 
 const headers = {
     Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
@@ -81,45 +74,39 @@ function incrementCounter(type) {
         ? new Date(counterData.lastUpdated)
         : null
 
-    // Check if it's a new day
-    if (lastUpdated && now.getDate() !== lastUpdated.getDate()) {
-        // Reset the counters
-        counterData.downloadCount = 0
-        counterData.requestCount = 0
-    }
-
-    // Check if the counter has been updated within the last 24 hours
-    if (
-        lastUpdated &&
-        now.getTime() - lastUpdated.getTime() < 24 * 60 * 60 * 1000
-    ) {
-        // Check if the counter has reached the daily limit
+    // Check if the counter has been updated within the last hour
+    if (lastUpdated && now.getTime() - lastUpdated.getTime() < 60 * 60 * 1000) {
+        // Check if the counter has reached the hourly limit
         if (
             (type === 'download' &&
-                counterData.downloadCount >= MAX_COUNT_PER_DAY) ||
+                counterData.downloadCount >= MAX_DOWNLOAD_PER_HOUR) ||
             (type === 'request' &&
-                counterData.requestCount >= MAX_COUNT_PER_DAY)
+                counterData.requestCount >= MAX_REQUEST_PER_HOUR)
         ) {
             console.log(
-                `Sorry, the ${type} counter has reached the daily limit of ${MAX_COUNT_PER_DAY}.`
+                `Sorry, the ${type} counter has reached the hourly limit of ${type === 'download' ? MAX_DOWNLOAD_PER_HOUR : MAX_REQUEST_PER_HOUR}.`
             )
             return
         }
+    } else {
+        // Reset the counters if it's a new hour
+        counterData.downloadCount = 0
+        counterData.requestCount = 0
+        counterData.lastUpdated = now.toISOString()
     }
 
     if (type === 'download') {
         counterData.downloadCount++
         console.log(
-            `download counter increased ${counterData.downloadCount}/${MAX_COUNT_PER_DAY}`
+            `download counter increased ${counterData.downloadCount}/${MAX_DOWNLOAD_PER_HOUR}`
         )
     } else if (type === 'request') {
         counterData.requestCount++
         console.log(
-            `request counter increased ${counterData.requestCount}/${MAX_COUNT_PER_DAY}`
+            `request counter increased ${counterData.requestCount}/${MAX_REQUEST_PER_HOUR}`
         )
     }
 
-    counterData.lastUpdated = now.toISOString()
     updateCounterData()
 }
 
@@ -178,8 +165,8 @@ export default async function forEachPageFetchAndDownload(
 
     for (let pageN = 1; pageN < 100000; pageN++) {
         if (
-            counterData.downloadCount < MAX_COUNT_PER_DAY &&
-            counterData.requestCount < MAX_COUNT_PER_DAY
+            counterData.downloadCount < MAX_DOWNLOAD_PER_HOUR &&
+            counterData.requestCount < MAX_REQUEST_PER_HOUR
         ) {
             console.log(`
             -----------------------------------------------------

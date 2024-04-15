@@ -70,9 +70,13 @@ __Photo Scraper__
 
 unsplashScraper.js
 *rate limited photo scrpaper.
-*arg is the topic.
+* arg is the topic.
 * unsplash rate limit is 50 requests per hour.
 * configured
+
+jpgToAvifConvert.js
+* checks if file has not yet been converted, then converts.
+* Takes directory (portrait vs landscape as an arg)
 
 __Other__
 
@@ -102,6 +106,9 @@ isTextRenderedFully
 
 exportArticle & writeArticleToGoogleDrive
 * Opens Claude3 stitches together copies, pastes into google drive saves with title.
+
+
+
 
 Tests to write:
 On open GPT site, are you logged in and at home screen?
