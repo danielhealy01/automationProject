@@ -35,3 +35,7 @@ export async function getClaudePrompt() {
     // Atm defaults to last article gen'd
     return `${await getInstruction(5)} ${await getArticle()}`
 }
+
+export async function getFAQPrompt() {
+    return `${await getInstruction(6)} Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided. Do not ask me any questions.`
+}

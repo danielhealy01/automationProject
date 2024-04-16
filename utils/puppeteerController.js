@@ -8,6 +8,7 @@ import {
     sendNPrompt,
     sendCarouselPrompt,
     sendVideoScriptPrompt,
+    sendFAQPrompt,
 } from './pupFunctions/pupSendPrompt.js'
 import getElapsedTime from './uptime.js'
 import writeReplysToJSON from './pupFunctions/writeReplysToJSON.js'
@@ -15,6 +16,7 @@ import writeThreadToJSON from './pupFunctions/writeThreadToJSON.js'
 import writeCarouselToJSON from './pupFunctions/writeCarouselToJSON.js'
 import writeVideoScriptToJSON from './pupFunctions/writeVideoScriptToJSON.js'
 import exportArticle from './exportArticle.js'
+import writeFAQToJSON from './pupFunctions/writeFAQToJSON.js'
 
 export async function run() {
     let startTime = Date.now()
@@ -47,6 +49,9 @@ export async function run() {
     await sendVideoScriptPrompt(page, promptNumber)
     promptNumber++
     await writeVideoScriptToJSON(page, sessionID)
+    await sendFAQPrompt(page, promptNumber)
+    promptNumber++
+    await writeFAQToJSON(page, sessionID)
     await browser.close()
     await exportArticle()
     console.log('finished to here')
