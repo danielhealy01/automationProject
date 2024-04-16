@@ -5,13 +5,14 @@ import getArticle from '../getArticle.js'
 export async function firstPrompt() {
     const topic = await getTopic()
     // Eventually abstract this out to the instructions.csv
-    return `Please make me a blog article outline with exactly 6 sections including the introduction and conclusion on ${topic}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided.`
+    // return `Please make me a blog article outline with exactly 6 sections including the introduction and conclusion on ${topic}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided.`
+    return `I want you to act as a blog article writer that speaks and writes fluent English*. Pretend that you have the most accurate and most detailed information about: ${topic}. Write a blog content outline for a post regarding: ${topic}. Include a catchy SEO title and meta description. The content outline should be divided with parent headings listed in roman numerals, and subheadings listed by letters. The blog article outline will have exactly 6 sections including the introduction and conclusion on ${topic}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided.`
 }
 
 export async function getNPrompt(promptNumber) {
     // replace hardcoded with line from instruction script.
     // const instruction = 'hardcoded instruction'
-    return `${await getInstruction(1)} ${promptNumber - 1}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided. Do not ask me any questions.`
+    return `${await getInstruction(1)} ${promptNumber - 1}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided. Do not ask me any questions. for the section, do not start the paragraph, or any paragraph with a starting symbol to mark it as a particular section, such as a roman numeral, a number or letter. Each paragraph should be formatted as a block of prose text.`
 }
 
 export async function getThreadFirstPrompt() {

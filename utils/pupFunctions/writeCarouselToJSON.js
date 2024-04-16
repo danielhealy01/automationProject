@@ -14,7 +14,7 @@ export default async function writeCarouselToJSON(page, sessionID) {
                 .toISOString()
                 .replace(/T/, ' ')
                 .replace(/\..+/, ''),
-            carousel,
+            carousel: carousel.replace('ChatGPTChatGPT', ''),
         }
 
         // Read existing data from the file
