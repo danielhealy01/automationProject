@@ -14,7 +14,7 @@ export default async function writeVideoScriptToJSON(page, sessionID) {
                 .toISOString()
                 .replace(/T/, ' ')
                 .replace(/\..+/, ''),
-            videoScript,
+            videoScript: videoScript.replace('ChatGPTChatGPT', ''),
         }
 
         // Read existing data from the file

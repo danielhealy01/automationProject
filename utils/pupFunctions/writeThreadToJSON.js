@@ -14,7 +14,7 @@ export default async function writeThreadToJSON(page, sessionID) {
                 .toISOString()
                 .replace(/T/, ' ')
                 .replace(/\..+/, ''),
-            thread,
+            thread: thread.replace('ChatGPTChatGPT', ''),
         }
 
         // Read existing data from the file
