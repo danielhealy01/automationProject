@@ -2,10 +2,8 @@ import getTopic from '../csvFunctions/getTopic.js'
 import getInstruction from '../csvFunctions/getInstruction.js'
 import getArticle from '../getArticle.js'
 
-export async function firstPrompt() {
-    const topic = await getTopic()
-    // Eventually abstract this out to the instructions.csv
-    // return `Please make me a blog article outline with exactly 6 sections including the introduction and conclusion on ${topic}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided.`
+export async function firstPrompt(topic) {
+    // const topicN = await getTopic(topic)
     return `I want you to act as a blog article writer that speaks and writes fluent English*. Pretend that you have the most accurate and most detailed information about: ${topic}. Write a blog content outline for a post regarding: ${topic}. Include a catchy SEO title and meta description. The content outline should be divided with parent headings listed in roman numerals, and subheadings listed by letters. The blog article outline will have exactly 6 sections including the introduction and conclusion on ${topic}. Do not include any meta-commentary about the prompting / reply process in your response. Only reply with text pertinent to the instructions provided.`
 }
 

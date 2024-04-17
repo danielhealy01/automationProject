@@ -9,14 +9,14 @@ import {
 import isTextRenderedFully from '../isTextRenderedFully.js'
 import sleep, { longSleep, typeSleep } from '../sleep.js'
 
-export async function sendFirstPrompt(page) {
+export async function sendFirstPrompt(page, topic) {
     try {
         await sleep()
         await page.click('textarea#prompt-textarea')
         await sleep()
         await sleep()
         // Change name of firstPrompt() to getFirstPrompt()
-        await page.type('textarea#prompt-textarea', await firstPrompt(), {
+        await page.type('textarea#prompt-textarea', await firstPrompt(topic), {
             delay: await typeSleep(),
         })
         await sleep()

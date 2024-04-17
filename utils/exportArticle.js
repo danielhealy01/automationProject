@@ -68,6 +68,8 @@ export default async function exportArticle() {
             await writeArticleToDrive(page)
 
             await sleep()
+            await browser.close()
+            await sleep()
 
             console.log('check finished typing finished to here')
         } catch (error) {

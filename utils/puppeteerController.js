@@ -17,8 +17,9 @@ import writeCarouselToJSON from './pupFunctions/writeCarouselToJSON.js'
 import writeVideoScriptToJSON from './pupFunctions/writeVideoScriptToJSON.js'
 import exportArticle from './exportArticle.js'
 import writeFAQToJSON from './pupFunctions/writeFAQToJSON.js'
+import sleep from './sleep.js'
 
-export async function run() {
+export async function run(topic) {
     let startTime = Date.now()
     const sessionID = Date.now()
     const browser = await Puppeteer.launch({
@@ -33,7 +34,7 @@ export async function run() {
     let promptNumber = 1
     const page = await browser.newPage()
     await pupLaunch(page)
-    await sendFirstPrompt(page)
+    await sendFirstPrompt(page, topic)
     promptNumber++
     while (promptNumber < 8) {
         await sendNPrompt(page, promptNumber)
@@ -54,6 +55,8 @@ export async function run() {
     await writeFAQToJSON(page, sessionID)
     await browser.close()
     await exportArticle()
+    await sleep()
+    await sleep()
     console.log('finished to here')
     console.log(getElapsedTime(startTime))
 }

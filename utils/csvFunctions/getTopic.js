@@ -54,7 +54,8 @@ export default async function getTopic() {
         const absoluteFilePath = absolutePathBuilder()
         const data = await fs.readFile(absoluteFilePath, 'utf8')
         const jsonData = JSON.parse(data)
-        return jsonData[0].topic[0]
+        // return jsonData[0].topic[0]
+        return jsonData[0].topic
     } catch (error) {
         console.error('Error reading file:', error)
     }
