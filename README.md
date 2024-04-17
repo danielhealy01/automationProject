@@ -46,6 +46,7 @@ promptBuilder - Prompt Builder
 * thread builder prompt
 * Carousel builder prompt
 * Video script builder prompt
+* FAQ prompt
 * Claude3 prompt to stitch together blog with formatting
 
 exportArticle
@@ -64,7 +65,7 @@ getTopic
 getInstructions
 * Generates an absolute path to instructions csv db
 * uses prompt number to calculate which article section to ask for
-  
+
 
 __Photo Scraper__
 
@@ -90,6 +91,7 @@ writeCarouselToJson
 
 writeVideoScriptToJson
 
+writeFAQToJSON
 
 getArticleFromID
 * Not currently used
