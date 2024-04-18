@@ -79,7 +79,7 @@ jpgToAvifConvert.js
 * checks if file has not yet been converted, then converts.
 * Takes directory (portrait vs landscape as an arg)
 
-__Tiktok Title Scraper__
+__Tiktok Title Scraper__ / + views
 tiktokTitleScraper.js
 * Scrapes descriptions for a tiktok page. Just pass in url.
 * You may need to do captchas. So not good for looping remotely.
