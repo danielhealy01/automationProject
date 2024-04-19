@@ -114,7 +114,8 @@ isTextRenderedFully
 exportArticle & writeArticleToGoogleDrive
 * Opens Claude3 stitches together copies, pastes into google drive saves with title.
 
-
+jsonToCsv.js
+Converts a json file from tiktok scraping into csv ready for sheets import
 
 
 Tests to write:
